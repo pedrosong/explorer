@@ -36,7 +36,7 @@ function Observe(data) {
         Object.defineProperty(data, key, {
             configurable: true,
             get() {
-                dep.target && dep.addSub(Dep.target)
+                Dep.target && dep.addSub(Dep.target)
                 return value;
             },
             set(newValue) {
