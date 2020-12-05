@@ -1,61 +1,66 @@
 //用来自定义canvas的渲染器
-
-import {createCommentVNode, createRenderer, reactive} from "vue";
 import {
-    Container,
-    Sprite,
-    Text,
-    Texture
+  createRenderer
+} from "vue";
+import {
+  Container,
+  Sprite,
+  Text,
+  Texture
 } from "pixi.js";
 
 const renderer = createRenderer({
-    createElement(type) {
-        let element;
-        switch (type) {
-            case "container":
-                element = new Container();
-                break;
-            case "sprite":
-                element = new Sprite();
-                break;
-        };
-        return element
-    },
+  createElement(type) {
+    let element;
+    switch (type) {
+      case "container":
+        element = new Container();
+        break;
+      case "sprite":
+        element = new Sprite();
+        break;
+    }
+    return element
+  },
 
-    insert(el, parent) {
-        if (el) {
-            parent.addChild
-        }
-    },
+  insert(el, parent) {
+    if (el) {
+      parent.addChild(el)
+    }
+  },
 
-    parentNode(node){
-        if(el && el.parent){
-            el.parent.removeChild(el)
-        }
-    },
+  parentNode(node) {
+    return node.parent
+  },
 
-    patchProp(el,key,preValue,nextValue){
-        switch (key){
-            case "texture":
-                el.texture = Texture.from(nextValue);
-                break;
-            case "onclick":
-                el.on("pointertap", nextValue);
-                break;
-            default:
-                el[key] = nextValue;
-                break;
-        }
-    },
+  remove(el) {
+    if (el && el.parent) {
+      el.parent.removeChild(el)
+    }
+  },
 
-    createText(text){
-        return new Text(text)
-    },
+  patchProp(el, key, preValue, nextValue) {
+    switch (key) {
+      case "texture":
+        el.texture = Texture.from(nextValue);
+        break;
+      case "onclick":
+        el.on("pointertap", nextValue);
+        break;
+      default:
+        el[key] = nextValue;
+        break;
+    }
+  },
 
-    nextSibling(){},
-    createComment(){}
+  createText(text) {
+    return new Text(text)
+  },
+
+  nextSibling() {},
+  createComment() {}
 })
 
-export function createApp(routComponent){
-    return renderer.createApp(routComponent)
+export function createApp(routComponent) {
+  return renderer.createApp(routComponent)
 }
